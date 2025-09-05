@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: rgb(254, 243, 243);
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+
+        window.addEventListener("resize", () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        });
+
+        class Particle {
+            constructor(x, y, radius, fade, speed, color, glow, glowColor) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.alpha = 1;
+                this.fade = fade;
+                this.dx = (Math.random() - 0.5) * speed;
+                this.dy = (Math.random() - 0.5) * speed;
+                this.color = color;
+                this.glow = glow;
+                this.glowColor = glowColor;
+            }
+
+            update() {
+                this.x += this.dx;
+                this.y += this.dy;
+                this.alpha -= this.fade;
+                this.radius *= 0.95;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color.replace('1)', `${this.alpha})`);
+                ctx.shadowBlur = this.glow ? 15 : 0;
+                ctx.shadowColor = this.glow ? this.glowColor : "transparent";
+                ctx.fill();
+            }
+        }
+
+        let particles = [];
+
+        window.addEventListener("mousemove", (e) => {
+            for (let i = 0; i < 8; i++) {
+                particles.push(
+                    new Particle(
+                        e.clientX, e.clientY,
+                        20, 0.001, 2,
+                        'rgba(0, 0, 0, 1)',
+                        false, null
+                    )
+                );
+            }
+        });
+
+        window.addEventListener("click", (e) => {
+            for (let i = 0; i < 30; i++) {
+                const r = Math.floor(Math.random() * 255);
+                const g = Math.floor(Math.random() * 255);
+                const b = Math.floor(Math.random() * 255);
+                particles.push(
+                    new Particle(
+                        e.clientX, e.clientY,
+                        8 + Math.random() * 6, 0.02, 3,
+                        `rgba(${r}, ${g}, ${b}, 1)`,
+                        true, `rgb(${r}, ${g}, ${b})`
+                    )
+                );
+            }
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles = particles.filter(p => p.alpha > 0.01 && p.radius > 0.5);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
