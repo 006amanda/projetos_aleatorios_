@@ -1,0 +1,79 @@
+body {
+  background: #fff9d6;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+h1 {
+  font-size: 48px;
+  font-family:'Courier New', Courier, monospace;
+  color: #e8b100;
+  font-weight: 700;
+  margin-top: 10px;
+  position: relative;
+  z-index: 5;
+  padding: 10px 15px;
+  backdrop-filter: blur(6px);
+}
+
+.lista {
+  display: flex;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  flex-direction: column;
+  width:32%; /* diminuído */
+  margin-top: 25px;
+  gap: 12px;
+  font-size: 19px;
+  align-items: flex-start;
+  position: relative;
+  z-index: 5;
+}
+
+.container{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:calc(100vh - 60px);
+  z-index:5;
+}
+
+label {
+  width: 100%;
+  background: rgba(255, 236, 158, 0.8);
+  padding: 10px 16px;
+  border-radius: 18px;
+  border: 2px solid #ffd956;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+label:hover {
+  transform: scale(1.02);
+}
+
+input:checked + label,
+label:has(input:checked) {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+#patos {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.45; /* patinhos base ficam semi pop */
+}
